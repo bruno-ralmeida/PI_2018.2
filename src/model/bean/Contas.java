@@ -1,7 +1,5 @@
 package model.bean;
 
-import java.sql.Date;
-
 /**
  *
  * @author Bruno Rocha
@@ -9,10 +7,10 @@ import java.sql.Date;
 public class Contas {
 
     private int idContas;
-    private Date data;
+    private String data;
     private float valor;
     private String descricao;
-    private Date mesRef;
+    private String mesRef;
     private float adiantamento;
     private String status;
     private Funcionario funcionario;
@@ -21,7 +19,7 @@ public class Contas {
     public Contas() {
     }
 
-    public Contas(int idContas, Date data, float valor, String descricao, Date mesRef, float adiantamento, String status, Funcionario funcionario, CategoriaDespesa catDespesa) {
+    public Contas(int idContas, String data, float valor, String descricao, String mesRef, float adiantamento, String status, Funcionario funcionario, CategoriaDespesa catDespesa) {
         this.idContas = idContas;
         this.data = data;
         this.valor = valor;
@@ -41,11 +39,11 @@ public class Contas {
         this.idContas = idContas;
     }
 
-    public Date getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(String data) {
         this.data = data;
     }
 
@@ -65,11 +63,11 @@ public class Contas {
         this.descricao = descricao;
     }
 
-    public Date getMesRef() {
+    public String getMesRef() {
         return mesRef;
     }
 
-    public void setMesRef(Date mesRef) {
+    public void setMesRef(String mesRef) {
         this.mesRef = mesRef;
     }
 
@@ -104,5 +102,6 @@ public class Contas {
     public void setCatDespesa(CategoriaDespesa catDespesa) {
         this.catDespesa = catDespesa;
     }
+
 
 }

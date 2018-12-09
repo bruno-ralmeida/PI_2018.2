@@ -16,6 +16,7 @@ public class UserDAO {
 
     public UserDAO() {
         con = ConnectionFactory.getConnection();
+
     }
 
     //TABELA LOGIN

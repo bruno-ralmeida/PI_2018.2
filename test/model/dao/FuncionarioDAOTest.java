@@ -16,7 +16,7 @@ import org.junit.Ignore;
  * @author Bruno Rocha
  */
 public class FuncionarioDAOTest {
-    
+
     public FuncionarioDAOTest() {
     }
 
@@ -25,85 +25,82 @@ public class FuncionarioDAOTest {
     public void insert() {
         Departamento departamento = new Departamento();
         departamento.setId(3);
-        
+
         Funcionario func = new Funcionario();
         func.setIdChefe(1);
         func.setDepartamento(departamento);
         func.setNome("Bruno Rocha");
         func.setLimite(2500);
         func.setCartao(9666);
-        
-        
+
         FuncionarioDAO dao = new FuncionarioDAO();
-        
+
         if (dao.insert(func)) {
             System.out.println("Salvo com sucesso!");
         } else {
             System.out.println("Erro ao salvar!");
         }
     }
+
     @Test
     @Ignore
     public void insertNoCard() {
         Departamento departamento = new Departamento();
         departamento.setId(3);
-        
+
         Funcionario func = new Funcionario();
         func.setIdChefe(1);
         func.setDepartamento(departamento);
         func.setNome("Teste Chefe");
         func.setLimite(2500);
         func.setCartao(6666);
-        
-        
-        
+
         FuncionarioDAO dao = new FuncionarioDAO();
-        
+
         if (dao.insert(func)) {
             System.out.println("Salvo com sucesso!");
         } else {
             System.out.println("Erro ao salvar!");
         }
     }
+
     @Test
     @Ignore
     public void insertBoss() {
         Departamento departamento = new Departamento();
         departamento.setId(3);
-        
+
         Funcionario func = new Funcionario();
-       
+
         func.setDepartamento(departamento);
         func.setNome("Teste sem Cartao");
         func.setLimite(2500);
-        
-        
-        
+
         FuncionarioDAO dao = new FuncionarioDAO();
-        
+
         if (dao.insert(func)) {
             System.out.println("Salvo com sucesso!");
         } else {
             System.out.println("Erro ao salvar!");
         }
     }
-    
+
     @Test
     @Ignore
     public void update() {
-        
+
         Funcionario func = new Funcionario();
         func.setId(61);
         func.setNome("Bruno Almeida");
         FuncionarioDAO dao = new FuncionarioDAO();
-        
+
         if (dao.update(func)) {
             System.out.println("Atualização realizada com sucesso!");
         } else {
             System.out.println("Erro ao salvar!");
         }
     }
-    
+
     @Test
     @Ignore
     public void delete() {
@@ -116,12 +113,21 @@ public class FuncionarioDAOTest {
             System.out.println("Erro ao excluir!");
         }
     }
-    @Test
+
+
+    @Test   
     @Ignore
     public void select() {
-        FuncionarioDAO dao = new FuncionarioDAO();        
-        for (Funcionario d: dao.select()){
-            System.out.println("ID: "+d.getId()+" Nome: "  + d.getNome());
+        FuncionarioDAO dao = new FuncionarioDAO();
+        DepartamentoDAO depDAO = new DepartamentoDAO();
+        for (Funcionario d : dao.select()) {
+            
+                System.out.println(" ID: " + d.getId() + "\n Id Chefe " + d.getIdChefe()+
+                        "\n Departamento: " + d.getDepartamento().getNome()
+                        + "\n Nome: " + d.getNome() + "\n Cartão: "
+                        + d.getCartao() +"\n \n");
+
+            
         }
     }
     

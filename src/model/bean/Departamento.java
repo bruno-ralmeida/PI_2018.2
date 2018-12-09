@@ -12,7 +12,10 @@ public class Departamento {
     public Departamento() {
 
     }
-
+    public Departamento (int id, String nome){
+        this.id = id;
+        this.nome = nome;
+    }
     public Departamento(String nome) {
 
         this.nome = nome;

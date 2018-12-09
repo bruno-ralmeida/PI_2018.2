@@ -58,8 +58,8 @@ public class DepartamentoDAO {
 
             while (rs.next()) {
                 Departamento departamento = new Departamento();
-
-                departamento.setId(rs.getInt(1));
+                
+                departamento.setId(rs.getInt("idDepartamento"));
                 departamento.setNome(rs.getString("nome"));
                 departamentos.add(departamento);
 

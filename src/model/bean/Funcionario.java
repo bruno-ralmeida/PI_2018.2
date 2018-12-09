@@ -90,6 +90,5 @@ public class Funcionario {
 
     public void setIdChefe(int idChefe) {
         this.idChefe = idChefe;
-    }
-
+   }
 }

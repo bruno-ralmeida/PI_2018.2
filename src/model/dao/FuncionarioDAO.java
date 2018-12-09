@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.bean.Departamento;
 import model.bean.Funcionario;
 
 /**
@@ -87,9 +88,12 @@ public class FuncionarioDAO {
         }
     }
 
+    
     //BUSCAR DADOS 
     public List<Funcionario> select() {
-        String sql = "SELECT * FROM funcionario ";
+        String sql = "SELECT func.idFuncionario, func.nome , func.idChefe, func.limite, func.cartao, dep.idDepartamento, dep.nome "
+                + "FROM funcionario func INNER JOIN departamento dep "
+                + "ON func.idDepartamento = dep.idDepartamento";
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -102,9 +106,18 @@ public class FuncionarioDAO {
 
             while (rs.next()) {
                 Funcionario funcionario = new Funcionario();
-
-                funcionario.setId(rs.getInt(1));
+                Departamento dep = new Departamento();
+                
+                funcionario.setId(rs.getInt("idFuncionario"));
+                funcionario.setIdChefe(rs.getInt("idChefe"));
+                dep.setId(rs.getInt("dep.idDepartamento"));
+                dep.setNome(rs.getString("dep.nome"));
+                funcionario.setDepartamento(dep);
                 funcionario.setNome(rs.getString("nome"));
+                funcionario.setLimite(rs.getFloat("limite"));
+                funcionario.setCartao(rs.getInt("cartao"));
+                
+                
                 funcionarios.add(funcionario);
 
             }
@@ -117,6 +130,7 @@ public class FuncionarioDAO {
 
         return funcionarios;
     }
+
     //Atualizar
 
     public boolean update(Funcionario funcionario) {

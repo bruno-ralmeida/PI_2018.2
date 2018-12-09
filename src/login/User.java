@@ -27,4 +27,6 @@ public class User {
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
+    
+    
 }
