@@ -116,7 +116,6 @@ public class FuncionarioDAOTest {
 
 
     @Test   
-    @Ignore
     public void select() {
         FuncionarioDAO dao = new FuncionarioDAO();
         DepartamentoDAO depDAO = new DepartamentoDAO();

@@ -2,12 +2,14 @@ package view;
 
 import javax.swing.JOptionPane;
 import login.UserDAO;
+import model.bean.Funcionario;
 
 /**
  *
  * @author Bruno Rocha
  */
 public class Login extends javax.swing.JFrame {
+
 
     public Login() {
         initComponents();
@@ -27,7 +29,6 @@ public class Login extends javax.swing.JFrame {
         btnEntrar = new javax.swing.JButton();
         btnPrimeiroAcesso = new javax.swing.JButton();
         txtSenha = new javax.swing.JPasswordField();
-        cbNivelAcesso = new javax.swing.JComboBox<>();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
 
@@ -70,8 +71,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        cbNivelAcesso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Diretor", "Gestor", "Operacional", " " }));
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -97,17 +96,12 @@ public class Login extends javax.swing.JFrame {
                         .addGap(376, 376, 376))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(btnPrimeiroAcesso)
-                        .addGap(425, 425, 425))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(cbNivelAcesso, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(443, 443, 443))))
+                        .addGap(425, 425, 425))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(cbNivelAcesso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(110, 110, 110)
+                .addGap(175, 175, 175)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblLogin)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -178,8 +172,9 @@ public class Login extends javax.swing.JFrame {
 
         UserDAO dao = new UserDAO();
         if (!txtId.getText().equals("") && !txtSenha.getText().equals("")) {
-            if (dao.checkLogin(Integer.parseInt(txtId.getText()), txtSenha.getText())) {
 
+            if (dao.checkLogin(Integer.parseInt(txtId.getText()), txtSenha.getText())) {
+                
                 new MenuPrincipal().setVisible(true);
                 this.dispose();
             } else {
@@ -242,7 +237,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton btnEntrar;
     private javax.swing.JButton btnLImpar;
     private javax.swing.JButton btnPrimeiroAcesso;
-    private javax.swing.JComboBox<String> cbNivelAcesso;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;

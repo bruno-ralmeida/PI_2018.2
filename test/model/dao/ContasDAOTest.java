@@ -51,11 +51,11 @@ public class ContasDAOTest {
     }
 
     @Test
-    @Ignore
     public void update() {
 
         Contas conta = new Contas();
-        conta.setIdContas(1);
+        conta.setIdContas(2);
+        conta.setStatus("Aguardando Aprovação");
         ContasDAO dao = new ContasDAO();
 
         if (dao.update(conta)) {
@@ -91,11 +91,13 @@ public class ContasDAOTest {
     }
     
     @Test
+    @Ignore
     public void selectFuncDep() {
         ContasDAO dao = new ContasDAO();
 
+        
         for (Contas d : dao.selectContasFuncionario()) {
-            System.out.println("ID: " + d.getIdContas()+ "\nNome: " + d.getFuncionario().getNome()
+            System.out.println("\nID: " + d.getIdContas()+ "\nNome: " + d.getFuncionario().getNome()
                     + "\nNome Departamento: " + d.getFuncionario().getDepartamento().getNome() + 
                     "\nValor: " + d.getValor());
         }

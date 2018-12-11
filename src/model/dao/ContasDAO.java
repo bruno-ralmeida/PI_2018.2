@@ -161,14 +161,14 @@ public class ContasDAO {
 
     //Atualizar
     public boolean update(Contas conta) {
-        String sql = "UPDATE contas SET descricao = ? WHERE idContas = ?";
+        String sql = "UPDATE contas SET condicao = ? WHERE idContas = ?";
 
         PreparedStatement stmt = null;
 
         try {
             stmt = con.prepareStatement(sql);
-            stmt.setString(1, conta.getDescricao());
             stmt.setInt(2, conta.getIdContas());
+            stmt.setString(1, conta.getStatus());
             stmt.executeUpdate();
             return true;
         } catch (SQLException ex) {

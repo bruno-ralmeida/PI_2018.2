@@ -1,5 +1,6 @@
 package view;
 
+import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.bean.CategoriaDespesa;
@@ -55,6 +56,7 @@ public class Reembolso extends javax.swing.JFrame {
         txtFunc = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("REEMBOLSO");
         setResizable(false);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/image/codex_1.png"))); // NOI18N
@@ -111,6 +113,11 @@ public class Reembolso extends javax.swing.JFrame {
 
         lblAdiant.setText("Adiantamento");
 
+        try {
+            txtData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         txtData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDataActionPerformed(evt);
@@ -142,9 +149,17 @@ public class Reembolso extends javax.swing.JFrame {
 
             },
             new String [] {
-                "DATA", "VALOR", "MÊS REF.", "ADIANTAMENTO", "STATUS"
+                "DATA", "MÊS REF.", "STATUS", "VALOR", "ADIANTAMENTO", "SALDO A RECEBER"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTReembolso);
 
         btnEnviar.setText("Enviar");
@@ -238,7 +253,6 @@ public class Reembolso extends javax.swing.JFrame {
 
         lblIdFunc.setText("Id Funcioário");
 
-        txtFunc.setText(" ");
         txtFunc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFuncActionPerformed(evt);
@@ -338,8 +352,14 @@ public class Reembolso extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDataActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        DecimalFormat df = new DecimalFormat("#,###.##");
+        float saldo = 0;
+        if (Float.parseFloat(txtValor.getText()) > Float.parseFloat(txtAdiantamento.getText())) {
+            saldo = Float.parseFloat(txtValor.getText()) - Float.parseFloat(txtAdiantamento.getText());
+        }
         DefaultTableModel dtmPrestacaoContas = (DefaultTableModel) jTReembolso.getModel();
-        Object[] dados = {txtData.getText(), txtValor.getText(), cbMesRef.getSelectedItem().toString(), txtAdiantamento.getText(), cbCatDesp.getSelectedItem().toString(), "Em Elaboração"};
+        Object[] dados = {txtData.getText(), cbMesRef.getSelectedItem().toString(), "Em Elaboração", txtValor.getText(),
+            txtAdiantamento.getText(), df.format(saldo)};
 
         dtmPrestacaoContas.addRow(dados);
 
@@ -369,9 +389,8 @@ public class Reembolso extends javax.swing.JFrame {
                 catDesp.setId(cbCatDesp.getSelectedIndex());
                 conta.setCatDespesa(catDesp);
                 if (contasDAO.insert(conta)) {
-                    
+
                     JOptionPane.showMessageDialog(null, "Dados Inseridos com sucesso!");
-                    jTReembolso.setModel(new javax.swing.table.DefaultTableModel());
 
                 }
             }

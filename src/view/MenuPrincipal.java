@@ -30,6 +30,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MENU PRINCIPAL");
         setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
@@ -56,7 +57,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnStatus.setText("Status ");
+        btnStatus.setText("Relatório/Status ");
         btnStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnStatusActionPerformed(evt);

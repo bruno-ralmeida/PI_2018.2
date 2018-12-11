@@ -1,5 +1,6 @@
 package view;
 
+import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.bean.CategoriaDespesa;
@@ -59,6 +60,7 @@ public class PrestacaoDeContas extends javax.swing.JFrame {
         btnVerificar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PRESTAÇÃO DE CONTAS");
         setResizable(false);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/image/codex_1.png"))); // NOI18N
@@ -115,6 +117,11 @@ public class PrestacaoDeContas extends javax.swing.JFrame {
 
         lblAdiant.setText("Adiantamento");
 
+        try {
+            txtData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         txtData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDataActionPerformed(evt);
@@ -153,14 +160,14 @@ public class PrestacaoDeContas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "DATA", "VALOR", "MÊS REF.", "ADIANTAMENTO", "CATEGOTIA", "STATUS"
+                "DATA", "MÊS REF.", "CATEGOTIA", "STATUS", "VALOR", "ADIANTAMENTO", "SALDO A RECEBER"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, false, false
+                false, false, false, false, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -302,14 +309,15 @@ public class PrestacaoDeContas extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cbMesRef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblIdFunc)
-                    .addComponent(txtFunc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtNumCartao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVerificar))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(cbMesRef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblIdFunc)
+                        .addComponent(txtFunc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(txtNumCartao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnVerificar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -370,9 +378,15 @@ public class PrestacaoDeContas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-
+        
+        DecimalFormat df = new DecimalFormat("#,###.00");
+        float saldo = 0;
+        if (Float.parseFloat(txtValor.getText()) > Float.parseFloat(txtAdiantamento.getText())) {
+            saldo = Float.parseFloat(txtValor.getText()) - Float.parseFloat(txtAdiantamento.getText());
+        }
         DefaultTableModel dtmPrestacaoContas = (DefaultTableModel) jTPresConta.getModel();
-        Object[] dados = {txtData.getText(), txtValor.getText(), cbMesRef.getSelectedItem().toString(), txtAdiantamento.getText(), cbCatDesp.getSelectedItem().toString(), "Em Elaboração"};
+        Object[] dados = {txtData.getText(), cbMesRef.getSelectedItem().toString(), cbCatDesp.getSelectedItem().toString() ,"Em Elaboração", txtValor.getText(),
+            txtAdiantamento.getText(), df.format(saldo)};
 
         dtmPrestacaoContas.addRow(dados);
     }//GEN-LAST:event_btnAdicionarActionPerformed
@@ -415,7 +429,6 @@ public class PrestacaoDeContas extends javax.swing.JFrame {
                 if (contasDAO.insert(conta)) {
                     
                     JOptionPane.showMessageDialog(null, "Dados Inseridos com sucesso!");
-                    jTPresConta.setModel(new javax.swing.table.DefaultTableModel());
 
                 }
             }

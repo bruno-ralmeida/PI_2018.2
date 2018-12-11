@@ -1,16 +1,38 @@
 package view;
 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import login.UserDAO;
+import model.bean.Contas;
+import model.bean.Funcionario;
+import model.dao.ContasDAO;
+import model.dao.FuncionarioDAO;
+
 /**
  *
  * @author Bruno Rocha
  */
 public class Aprovacao extends javax.swing.JFrame {
 
+    private boolean acesso;
+
+    public boolean getAcesso() {
+        return acesso;
+    }
+
+    public void setAcesso(boolean acesso) {
+        this.acesso = acesso;
+    }
+
     /**
      * Creates new form Aprovacao
      */
     public Aprovacao() {
         initComponents();
+        DefaultTableModel aprovacao = (DefaultTableModel) jTAprovacao.getModel();
+        jTAprovacao.setRowSorter(new TableRowSorter(aprovacao));
+        Login log = new Login();
     }
 
     /**
@@ -24,109 +46,223 @@ public class Aprovacao extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTAprovacao = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtIdDep = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
         btnAprovar = new javax.swing.JButton();
         btnRejeitar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        btnVerificar = new javax.swing.JButton();
+        txtId = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtIdConta = new javax.swing.JTextField();
+        lblValor = new javax.swing.JLabel();
+        txtValor = new javax.swing.JTextField();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        btnInicio = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PEDIDOS AGUARDANDO APROVAÇÃO");
         setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTAprovacao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "Id", "Nome Funcionario", "Departamento", "Valor", "Status"
+                "ID", "Nome Funcionario", "Departamento", "Valor", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jTAprovacao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTAprovacaoMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTAprovacao);
+        if (jTAprovacao.getColumnModel().getColumnCount() > 0) {
+            jTAprovacao.getColumnModel().getColumn(0).setMinWidth(0);
+            jTAprovacao.getColumnModel().getColumn(0).setMaxWidth(0);
+            jTAprovacao.getColumnModel().getColumn(3).setMinWidth(0);
+            jTAprovacao.getColumnModel().getColumn(3).setPreferredWidth(0);
+            jTAprovacao.getColumnModel().getColumn(3).setMaxWidth(0);
+        }
 
-        jLabel3.setText("Id Funcionário");
+        jLabel3.setText("Id Departamento");
 
-        jButton1.setText("Buscar");
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnAprovar.setText("Aprovar");
+        btnAprovar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAprovarActionPerformed(evt);
+            }
+        });
 
         btnRejeitar.setText("Rejeitar");
+        btnRejeitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRejeitarActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Id Supervisor");
+
+        btnVerificar.setText("Verificar");
+        btnVerificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerificarActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("id Conta");
+
+        lblValor.setText("Valor");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnRejeitar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAprovar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRejeitar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnAprovar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 884, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(92, 92, 92)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addGap(617, 617, 617))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 884, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnVerificar)
+                                .addGap(417, 417, 417)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(92, 92, 92)
+                                        .addComponent(txtIdDep, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnBuscar))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(txtIdConta, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblValor)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(txtIdDep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBuscar))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(btnVerificar)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jLabel4)
+                    .addComponent(txtIdConta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblValor)
+                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAprovar)
                     .addComponent(btnRejeitar))
-                .addGap(73, 73, 73))
+                .addGap(46, 46, 46))
         );
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/image/codex_1.png"))); // NOI18N
 
+        btnInicio.setText("Inicio");
+        btnInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInicioActionPerformed(evt);
+            }
+        });
+
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnInicio)
+                    .addComponent(btnSair)))
+        );
+
         jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jPanel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(412, 412, 412)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addContainerGap(442, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -154,6 +290,137 @@ public class Aprovacao extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+
+    private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
+
+        String senha = JOptionPane.showInputDialog("SENHA: ");
+
+        UserDAO dao = new UserDAO();
+        if (!txtId.getText().equals("") && !senha.equals("")) {
+            if (dao.checkLogin(Integer.parseInt(txtId.getText()), senha)) {
+                JOptionPane.showMessageDialog(null, "ACESSO LIBERADO");
+                setAcesso(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "DADOS INVÁLIDOS");
+
+            }
+        }
+
+    }//GEN-LAST:event_btnVerificarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        ContasDAO dao = new ContasDAO();
+        int idDep = Integer.parseInt(txtIdDep.getText());
+
+        DefaultTableModel aprovacao = (DefaultTableModel) jTAprovacao.getModel();
+        jTAprovacao.setRowSorter(new TableRowSorter(aprovacao));
+
+        for (Contas d : dao.selectContasFuncionario()) {
+            if ((idDep == d.getFuncionario().getDepartamento().getId()) && (d.getStatus().equals("Aguardando Aprovação"))) {
+
+                aprovacao.addRow(new Object[]{
+                    d.getIdContas(),
+                    d.getFuncionario().getNome(),
+                    d.getFuncionario().getDepartamento().getNome(),
+                    d.getValor(),
+                    d.getStatus()
+                }
+                );
+            }
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnAprovarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprovarActionPerformed
+
+        while (getAcesso() == false) {
+            JOptionPane.showMessageDialog(null, "Você precisa validar o seu acesso!");
+            break;
+        }
+        
+
+        ContasDAO dao = new ContasDAO();
+        FuncionarioDAO funcDAO = new FuncionarioDAO();
+
+        int id;
+        float limite = 0;
+
+        for (Funcionario d : funcDAO.select()) {
+            if (d.getId() == Integer.parseInt(txtId.getText())) {
+                id = d.getId();
+                limite = d.getLimite();
+            }
+        }
+
+        if ((limite >= Float.parseFloat(txtValor.getText())) && (getAcesso() == true)) {
+
+            Contas conta = new Contas();
+            conta.setIdContas(Integer.parseInt(txtIdConta.getText()));
+            conta.setStatus("Arovado");
+            if (dao.update(conta)) {
+                JOptionPane.showMessageDialog(null, "Atualização feita com sucesso");
+            } else {
+                JOptionPane.showMessageDialog(null, "ERRO");
+
+            }
+        }
+
+    }//GEN-LAST:event_btnAprovarActionPerformed
+
+    private void jTAprovacaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTAprovacaoMouseClicked
+
+        if (jTAprovacao.getSelectedRow() != 1) {
+
+            txtIdConta.setText(jTAprovacao.getValueAt(jTAprovacao.getSelectedRow(), 0).toString());
+            txtValor.setText(jTAprovacao.getValueAt(jTAprovacao.getSelectedRow(), 3).toString());
+
+        }
+    }//GEN-LAST:event_jTAprovacaoMouseClicked
+
+    private void btnRejeitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejeitarActionPerformed
+        while (getAcesso() == false) {
+            JOptionPane.showMessageDialog(null, "Você precisa validar o seu acesso!");
+            break;
+        }
+        
+        
+        ContasDAO dao = new ContasDAO();
+        FuncionarioDAO funcDAO = new FuncionarioDAO();
+
+        int id;
+        float limite = 0;
+
+        for (Funcionario d : funcDAO.select()) {
+            if (d.getId() == Integer.parseInt(txtId.getText())) {
+                id = d.getId();
+                limite = d.getLimite();
+            }
+        }
+
+        if ((limite >= Float.parseFloat(txtValor.getText())) && (getAcesso() == true)) {
+
+            Contas conta = new Contas();
+            conta.setIdContas(Integer.parseInt(txtIdConta.getText()));
+            conta.setStatus("Rejeitado");
+            if (dao.update(conta)) {
+                JOptionPane.showMessageDialog(null, "Atualização feita com sucesso");
+            } else {
+                JOptionPane.showMessageDialog(null, "ERRO");
+
+            }
+        }
+
+    }//GEN-LAST:event_btnRejeitarActionPerformed
+
+    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
+        new MenuPrincipal().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnInicioActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        new Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,14 +459,24 @@ public class Aprovacao extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAprovar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnInicio;
     private javax.swing.JButton btnRejeitar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSair;
+    private javax.swing.JButton btnVerificar;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable jTAprovacao;
+    private javax.swing.JLabel lblValor;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtIdConta;
+    private javax.swing.JTextField txtIdDep;
+    private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
 }

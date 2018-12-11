@@ -3,6 +3,7 @@
 <Form version="1.9" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="REEMBOLSO"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -339,6 +340,11 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="txtData">
+                      <Properties>
+                        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
+                          <Format format="##/##/####" subtype="-1" type="5"/>
+                        </Property>
+                      </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDataActionPerformed"/>
                       </Events>
@@ -406,16 +412,22 @@
                         <Component class="javax.swing.JTable" name="jTReembolso">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="5" rowCount="0">
-                                <Column editable="true" title="DATA" type="java.lang.Object"/>
-                                <Column editable="true" title="VALOR" type="java.lang.Object"/>
-                                <Column editable="true" title="M&#xca;S REF." type="java.lang.Object"/>
+                              <Table columnCount="6" rowCount="0">
+                                <Column editable="false" title="DATA" type="java.lang.Object"/>
+                                <Column editable="false" title="M&#xca;S REF." type="java.lang.Object"/>
+                                <Column editable="false" title="STATUS" type="java.lang.Object"/>
+                                <Column editable="false" title="VALOR" type="java.lang.Object"/>
                                 <Column editable="true" title="ADIANTAMENTO" type="java.lang.Object"/>
-                                <Column editable="true" title="STATUS" type="java.lang.Object"/>
+                                <Column editable="true" title="SALDO A RECEBER" type="java.lang.Object"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                               <TableColumnModel selectionModel="0">
+                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                  <Title/>
+                                  <Editor/>
+                                  <Renderer/>
+                                </Column>
                                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                                   <Title/>
                                   <Editor/>
@@ -468,9 +480,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtFunc">
-              <Properties>
-                <Property name="text" type="java.lang.String" value=" "/>
-              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFuncActionPerformed"/>
               </Events>
